@@ -1,0 +1,19 @@
+.todolist {
+    background-color: #eee;
+    width: 20%;
+    height: 800px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.todolist_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.todolist_task {
+    margin: 0;
+}
