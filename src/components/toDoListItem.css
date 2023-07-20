@@ -1,0 +1,13 @@
+.todolist_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.todolist_task {
+    margin: 0;
+    padding-left: 10px;
+}
