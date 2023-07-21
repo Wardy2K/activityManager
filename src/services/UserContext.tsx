@@ -1,23 +1,37 @@
 import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import { createContext, useState } from "react";
 import { auth, createUserDocument } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const provider = new GoogleAuthProvider();
+
+type UserTodolists = {
+  name: string;
+  id: string;
+};
+
+interface UserInfo {
+  todolists: UserTodolists[];
+}
 
 type AuthContext = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   signInWithGoogle: () => void;
+  userInfo: UserInfo | null;
 };
 
 export const UserAuthContext = createContext<AuthContext>({
   user: null,
   setUser: () => {},
   signInWithGoogle: () => {},
+  userInfo: null,
 });
 
 export const UserContext = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [userInfo, setUserInfo] = useState<null | UserInfo>(null);
 
   const signInWithGoogle = async () => {
     try {
@@ -25,7 +39,13 @@ export const UserContext = ({ children }: { children: React.ReactNode }) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      await createUserDocument(user);
+      const userDoc = await getDoc(doc(db, `users/${user.uid}`));
+      if (userDoc.exists()) {
+        setUserInfo(userDoc.data() as UserInfo);
+      } else {
+        await createUserDocument(user);
+        setUserInfo({ todolists: [] });
+      }
       setUser(user);
     } catch (error) {
       // Handle Errors here.
@@ -35,7 +55,9 @@ export const UserContext = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserAuthContext.Provider value={{ user, setUser, signInWithGoogle }}>
+    <UserAuthContext.Provider
+      value={{ user, setUser, signInWithGoogle, userInfo }}
+    >
       {children}
     </UserAuthContext.Provider>
   );

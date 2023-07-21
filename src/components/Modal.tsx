@@ -14,7 +14,13 @@ import {
 import { db } from "../firebase";
 import { useContext } from "react";
 import { UserAuthContext } from "../services/UserContext";
-import { arrayUnion, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 
 interface ModalProps {
   open: boolean;
@@ -26,7 +32,7 @@ interface ModalProps {
 }
 
 export default function Modal(props: ModalProps) {
-  const { user } = useContext(UserAuthContext);
+  const { user, userInfo } = useContext(UserAuthContext);
 
   const handleCloseAddTodoListModal = () => {
     props.setOpen(false);
@@ -38,15 +44,24 @@ export default function Modal(props: ModalProps) {
       console.log("Redirect to Authication page");
       return;
     }
-    const toDoListDocRef = doc(db, `users/${user.uid}/todolists`);
+    const dataNewToDo = {
+      theme: props.theme,
+      name: props.newTodoListName,
+    };
+    const toDoListDocRef = collection(db, `users/${user.uid}/todolists`);
     const userDocRef = doc(db, `users/${user.uid}`);
-    await setDoc(toDoListDocRef, {});
-    await setDoc(userDocRef, {
-      todolists: arrayUnion({
-        name: props.newTodoListName,
-        id: toDoListDocRef.id,
-      }),
-    });
+    const newDoc = await addDoc(toDoListDocRef, dataNewToDo);
+    console.log(props.newTodoListName);
+    await setDoc(
+      userDocRef,
+      {
+        todolists: arrayUnion({
+          name: props.newTodoListName,
+          id: newDoc.id,
+        }),
+      },
+      { merge: true }
+    );
     props.setOpen(false);
     props.setTheme("");
   };
