@@ -15,6 +15,7 @@ import { db } from "../firebase";
 import { useContext } from "react";
 import { UserAuthContext } from "../services/UserContext";
 import {
+  Timestamp,
   addDoc,
   arrayUnion,
   collection,
@@ -32,7 +33,7 @@ interface ModalProps {
 }
 
 export default function Modal(props: ModalProps) {
-  const { user, userInfo } = useContext(UserAuthContext);
+  const { user } = useContext(UserAuthContext);
 
   const handleCloseAddTodoListModal = () => {
     props.setOpen(false);
@@ -47,11 +48,11 @@ export default function Modal(props: ModalProps) {
     const dataNewToDo = {
       theme: props.theme,
       name: props.newTodoListName,
+      date: Timestamp.now(),
     };
     const toDoListDocRef = collection(db, `users/${user.uid}/todolists`);
     const userDocRef = doc(db, `users/${user.uid}`);
     const newDoc = await addDoc(toDoListDocRef, dataNewToDo);
-    console.log(props.newTodoListName);
     await setDoc(
       userDocRef,
       {

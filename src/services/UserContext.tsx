@@ -1,4 +1,9 @@
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  User,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { createContext, useState } from "react";
 import { auth, createUserDocument } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -20,6 +25,7 @@ type AuthContext = {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   signInWithGoogle: () => void;
   userInfo: UserInfo | null;
+  disconnect: () => void;
 };
 
 export const UserAuthContext = createContext<AuthContext>({
@@ -27,6 +33,7 @@ export const UserAuthContext = createContext<AuthContext>({
   setUser: () => {},
   signInWithGoogle: () => {},
   userInfo: null,
+  disconnect: () => {},
 });
 
 export const UserContext = ({ children }: { children: React.ReactNode }) => {
@@ -54,9 +61,15 @@ export const UserContext = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const disconnect = async () => {
+    await signOut(auth);
+    setUser(null);
+    setUserInfo(null);
+  };
+
   return (
     <UserAuthContext.Provider
-      value={{ user, setUser, signInWithGoogle, userInfo }}
+      value={{ user, setUser, signInWithGoogle, userInfo, disconnect }}
     >
       {children}
     </UserAuthContext.Provider>

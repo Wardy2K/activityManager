@@ -1,17 +1,30 @@
-import Button from '@mui/material/Button'
-import './Header.css'
-import { useContext } from 'react'
-import { UserAuthContext } from '../services/UserContext'
+import Button from "@mui/material/Button";
+import "./Header.css";
+import { useContext } from "react";
+import { UserAuthContext } from "../services/UserContext";
 
 export default function Header() {
-
-	const {signInWithGoogle} = useContext(UserAuthContext)
+  const { signInWithGoogle, disconnect,user } = useContext(UserAuthContext);
 
   return (
     <header>
-        <Button variant="contained" color="info" onClick={() => signInWithGoogle()}>
+      {user ? (
+        <Button
+        variant="contained"
+        color="info"
+        onClick={() => disconnect()}
+      >
+        Logout
+      </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => signInWithGoogle()}
+        >
           Login
         </Button>
+      )}
     </header>
-  )
+  );
 }

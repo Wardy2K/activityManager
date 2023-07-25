@@ -4,10 +4,11 @@
     width: 20%;
     min-width: 300px;
     align-items: center;
-    margin: 0 25px;
+    margin: 20px 25px;
 }
 
 .todolist {
+    flex-wrap: wrap;
     background-color: #eee;
     min-height: 700px;
     padding: 10px;
@@ -18,4 +19,3 @@
 .todolist_name {
     margin: 10px 0;
 }
-
