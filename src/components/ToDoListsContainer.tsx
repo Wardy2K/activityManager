@@ -34,9 +34,14 @@ export default function ToDoListsContainer() {
 
   return (
     <>
-      {todolists.map((todolist, i) => {
+      {todolists.map((todolist) => {
         return (
-          <ToDoList title={todolist.name} theme={todolist.theme} key={i} />
+          <ToDoList
+            title={todolist.name}
+            theme={todolist.theme}
+            id={todolist.id}
+            key={todolist.id}
+          />
         );
       })}
     </>

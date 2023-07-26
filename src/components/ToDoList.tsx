@@ -2,6 +2,10 @@ import ToDoListItem from "./ToDoListItem";
 import "./toDoList.css";
 import Button from "@mui/material/Button";
 import { todolistType } from "../todolistType";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
+import { useContext } from "react";
+import { UserAuthContext } from "../services/UserContext";
 
 const handleColorTodolist = (color: string): string => {
   switch (color) {
@@ -20,7 +24,18 @@ const handleColorTodolist = (color: string): string => {
   }
 };
 
-export default function ToDoList(props: { title: string; theme: string }) {
+export default function ToDoList(props: {
+  title: string;
+  theme: string;
+  id: string;
+}) {
+  const { user } = useContext(UserAuthContext);
+
+  const deleteTodolist = async () => {
+    const docToRemove = doc(db, `users/${user?.uid}/todolists/${props.id}`);
+    await deleteDoc(docToRemove);
+  };
+
   return (
     <div className="todolist_container">
       <p className="todolist_name">{props.title}</p>
@@ -42,6 +57,7 @@ export default function ToDoList(props: { title: string; theme: string }) {
           color="error"
           style={{ marginBottom: "10px" }}
           fullWidth
+          onClick={() => deleteTodolist()}
         >
           Delete this list
         </Button>
