@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
-import Modal from "./components/Modal";
+import ModalAddTodolist from "./components/ModalAddTodolist";
 import { UserContext } from "./services/UserContext";
 import Button from "@mui/material/Button";
 import ToDoListsContainer from "./components/ToDoListsContainer";
@@ -24,7 +24,7 @@ function App() {
         >
           Add a todolist
         </Button>
-        <Modal
+        <ModalAddTodolist
           open={open}
           setOpen={setOpen}
           theme={theme}

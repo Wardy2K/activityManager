@@ -21,16 +21,11 @@ export default function ToDoListsContainer() {
     onSnapshot(q, (snapshot) => {
       let tmp: Todolist[] = [];
       snapshot.docs.forEach((docSnap) => {
-        console.log(docSnap.data());
         tmp.push({ ...(docSnap.data() as Todolist), id: docSnap.id }); // Allow to have the id in the state and not have to stock it in firestore
       });
       setTodolists(tmp);
     });
   }, [user]);
-
-  useEffect(() => {
-    console.log("todolists", todolists);
-  }, [todolists]);
 
   return (
     <>

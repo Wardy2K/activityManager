@@ -32,7 +32,7 @@ interface ModalProps {
   setNewTodoListName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Modal(props: ModalProps) {
+export default function ModalAddTask(props: ModalProps) {
   const { user } = useContext(UserAuthContext);
 
   const handleCloseAddTodoListModal = () => {
@@ -73,8 +73,8 @@ export default function Modal(props: ModalProps) {
         <DialogTitle>Add a new list</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To create a new list, please enter a name for your todolist and a
-            theme here.
+            To create a new task, please enter a title for your task, a priority
+            level and deadline if there is any.
           </DialogContentText>
           <TextField
             autoFocus
