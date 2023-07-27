@@ -52,6 +52,8 @@ export default function ModalAddTask(props: ModalProps) {
     };
     const toDoListDocRef = collection(db, `users/${user.uid}/todolists`);
     const userDocRef = doc(db, `users/${user.uid}`);
+    props.setOpen(false);
+    props.setTheme("");
     const newDoc = await addDoc(toDoListDocRef, dataNewToDo);
     await setDoc(
       userDocRef,
@@ -63,8 +65,6 @@ export default function ModalAddTask(props: ModalProps) {
       },
       { merge: true }
     );
-    props.setOpen(false);
-    props.setTheme("");
   };
 
   return (

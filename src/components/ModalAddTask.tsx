@@ -51,9 +51,9 @@ export default function ModalAddTodolist(props: ModalProps) {
       db,
       `users/${user.uid}/todolists/${props.id}/tasks`
     );
-    await addDoc(toDoListCol, dataNewTask);
     props.setIsModalOpen(false);
     props.setPriority("");
+    await addDoc(toDoListCol, dataNewTask);
   };
 
   return (
